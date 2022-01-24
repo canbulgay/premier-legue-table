@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use App\Models\Team;
 
 class TeamSeeder extends Seeder
@@ -17,10 +16,10 @@ class TeamSeeder extends Seeder
     {
 
         $teams = [
-            ['name' => 'Manchester City','stadium' => 'Etihad',],
-            ['name' => "Chelsea",'stadium'=> "Stamford Bridge",],
-            ['name' => "Liverpool",'stadium'=> "Anfield",],
-            ['name' => "Arsenal",'stadium'=> "Emirates",]
+            ['name' => 'Manchester City','stadium' => 'Etihad','strength' => rand(80,100)],
+            ['name' => "Chelsea",'stadium'=> "Stamford Bridge",'strength' => rand(80,100)],
+            ['name' => "Liverpool",'stadium'=> "Anfield",'strength' => rand(80,100)],
+            ['name' => "Arsenal",'stadium'=> "Emirates",'strength' => rand(80,100)]
         ];
         Team::insert($teams);
     }
