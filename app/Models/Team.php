@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Team extends Model
 {
     use HasFactory;
+    
+    
+    public function points()
+    {
+        return $this->hasOne(Point::class);
+    }
 }
+
