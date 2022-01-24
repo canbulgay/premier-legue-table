@@ -15,12 +15,11 @@ class TeamSeeder extends Seeder
     public function run()
     {
 
-        $teams = [
+        Team::insert([
             ['name' => 'Manchester City','stadium' => 'Etihad','strength' => rand(80,100)],
             ['name' => "Chelsea",'stadium'=> "Stamford Bridge",'strength' => rand(80,100)],
             ['name' => "Liverpool",'stadium'=> "Anfield",'strength' => rand(80,100)],
             ['name' => "Arsenal",'stadium'=> "Emirates",'strength' => rand(80,100)]
-        ];
-        Team::insert($teams);
+        ]);
     }
 }

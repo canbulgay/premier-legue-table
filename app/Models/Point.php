@@ -9,6 +9,10 @@ class Point extends Model
 {
     use HasFactory;
 
+    /**
+    * * Points ve goal difference columnlarını manuel olarak değiştirmek istemediğim için fillable kısmına almadım.
+    * ? fillable kısmına almadıgım takdirde veri tabanında değişen değerler sonucunda kendi kendine değişirler mi?
+     */
     protected $fillable = [
         'played',
         'won',

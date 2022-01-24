@@ -20,7 +20,7 @@ class PointSeeder extends Seeder
 
         for($i = 1 ; $i <= $numberOfTeams ; $i++) 
         {   
-            $point = Point::insert([
+            Point::insert([
                 'team_id' => $i,
             ]);
         }
