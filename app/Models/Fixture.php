@@ -15,7 +15,6 @@ class Fixture extends Model
         'home_result',
         'away_result',
         'is_played',
-        'start_at'
     ];
 
     public function homeTeam(){

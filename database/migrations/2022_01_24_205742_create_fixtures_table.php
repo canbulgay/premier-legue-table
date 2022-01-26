@@ -15,12 +15,15 @@ class CreateFixturesTable extends Migration
     {
         Schema::create('fixtures', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('home_id')->constrained('teams');
-            $table->foreignId('away_id')->constrained('teams');
-            $table->integer('home_result')->nullable();
-            $table->integer('away_result')->nullable();
+            $table->unsignedBigInteger('home_id');
+            $table->unsignedBigInteger('away_id');
+            $table->integer('home_result')->default(0);
+            $table->integer('away_result')->default(0);
             $table->enum('is_played',['played','not_played'])->default('not_played');
-            $table->dateTime('start_at');
+            $table->timestamps();
+
+            $table->foreign('home_id')->references('id')->on('teams');
+            $table->foreign('away_id')->references('id')->on('teams');
         });
     }
 
