@@ -14,5 +14,12 @@ class Team extends Model
     {
         return $this->hasOne(Point::class);
     }
+    public function homeTeamFixture()
+    {
+        return $this->hasMany(Fixture::class,'home_id');
+    }
+    public function awayTeamFixture()
+    {
+        return $this->hasMany(Fixture::class,'away_id');
+    }
 }
-
