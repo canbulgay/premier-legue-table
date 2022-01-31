@@ -68,7 +68,6 @@ class SetFixtureScheduleCommand extends Command
 
     for($i = 1 ; $i <= $teamsCount-1 ; $i++){
         $firstHalfOfSeason[] = [$constantTeam,$fixedTeams[0]];
-
         for($j = 1 ; $j <= ($teamsCount-2) / 2; $j++ ){
             $firstHalfOfSeason[] = [$fixedTeams[$j],$fixedTeams[count($fixedTeams) -$j]];
         }
@@ -91,6 +90,6 @@ class SetFixtureScheduleCommand extends Command
         ]);
     }
 
-    $this->info('Fixture Schedule Setting Done');
+    $this->info('Fixture Schedule Created.');
     }
 }

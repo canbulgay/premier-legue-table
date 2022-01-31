@@ -19,10 +19,10 @@ class Fixture extends Model
 
     public function homeTeam(){
 
-        $this->belongsTo(Team::class,'home_id');
+        return $this->belongsTo(Team::class,'home_id');
     }
     public function awayTeam(){
 
-        $this->belongsTo(Team::class,'away_id');
+        return $this->belongsTo(Team::class,'away_id');
     }
 }
