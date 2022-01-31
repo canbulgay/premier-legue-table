@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Fixture;
+use App\Models\Point;
 use App\Models\Team;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -33,25 +34,24 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 
 Route::get('/test',function(){
 
-    /**
-     * * Fixture modeli id'lere göre sıralandıktan sonra oynanmayan maçların ilkini ev sahibi ve deplasman takımının bilgileriyle nextGame değişkenine atanır.
-     */
     
+    // Fixture modeli id'lere göre sıralandıktan sonra oynanmayan maçların ilkini ev sahibi ve deplasman takımının bilgileriyle nextGame değişkenine atanır.
     $nextGame = Fixture::with(['homeTeam','awayTeam'])
                 ->where('is_played','not_played')
                 ->orderBy('id')
                 ->first();
     
+    // Takımların güçleri ev sahibi veya deplasman olmalarına göre yeniden hesaplanır.
     $homeTeamStrength = $nextGame->homeTeam->strength;
         $homeTeamAdvantage = 0.05;
-            $newHomeTeamStrength = $homeTeamStrength - ($homeTeamStrength * $homeTeamAdvantage);
+            $newHomeTeamStrength = $homeTeamStrength + ($homeTeamStrength * $homeTeamAdvantage);
                             
     $awayTeamStrength = $nextGame->awayTeam->strength;
-        $awayTeamDisadvantage = -0.05;
-            $newAwayTeamStrength = $awayTeamStrength - ($awayTeamStrength*$awayTeamDisadvantage);
+        $awayTeamDisadvantage = 0.05;
+            $newAwayTeamStrength = $awayTeamStrength - ($awayTeamStrength * $awayTeamDisadvantage);
 
     /**
-     * * Takım güçlerin durumuna göre aşşağıdaki değişkenler hesaplanmıştır.
+     * * Takım güçlerinin son durumlarına göre farklı senaryolar aşşağıdaki değişkenlere göre hesaplanmıştır.
      * 
     ** homeScored = Ev sahibi takımın geçmişte ev sahibiyken attığı gollerin ortalaması.
     ** awayScored = Deplasman takımının geçmişte deplasmanda attığı gollerin ortalaması.
@@ -92,9 +92,51 @@ Route::get('/test',function(){
     $awayTeamGoals = (int)(($homeConceded + $awayScored) / 2);
     $homeTeamGoals = (int)(($homeScored + $awayConceded) / 2); 
 
+    //Sonuçlar fikstür tablosuna update edilmiş bir şekilde geri gönderilir.
     $nextGame->home_result = $homeTeamGoals;
     $nextGame->away_result = $awayTeamGoals;
     $nextGame->is_played = "played";
     $nextGame->save();
+
+    /**
+     * * Takımlara ait id'ler ile puan tablosundaki ilişkileri bulunur. Ve aldıkları sonuçlara göre değerleri güncellenir.
+     */
+    $homeTeamPoints = Point::find($nextGame->homeTeam->id);
+    $awayTeamPoints = Point::find($nextGame->awayTeam->id);
+
+    // Oynanan maç sayısı.
+    $homeTeamPoints->played = $homeTeamPoints->played + 1;
+    $awayTeamPoints->played = $awayTeamPoints->played + 1;
+
+    //Atılan ve yenilen goller.
+    $homeTeamPoints->goals_for = $homeTeamPoints->goals_for + $homeTeamGoals;
+    $homeTeamPoints->goals_against = $homeTeamPoints->goals_against + $awayTeamGoals;
+
+    $awayTeamPoints->goals_for = $awayTeamPoints->goals_for + $awayTeamGoals;
+    $awayTeamPoints->goals_against = $awayTeamPoints->goals_against + $homeTeamGoals;
+
+    // Takımların gol sayısına göre kazanıp kazanmadıklarını belirlenmesi ve değerlerin güncellenmesi.
+    if($homeTeamGoals > $awayTeamGoals){
+        
+        $homeTeamPoints->won = $homeTeamPoints->won + 1;
+        $awayTeamPoints->lost = $awayTeamPoints->lost + 1;
+    
+    }elseif($homeTeamGoals < $awayTeamGoals){
+        
+        $homeTeamPoints->lost = $homeTeamPoints->lost + 1;
+        $awayTeamPoints->won = $awayTeamPoints->won + 1;
+    
+    }else{
+
+        $homeTeamPoints->drawn = $homeTeamPoints->drawn + 1;
+        $awayTeamPoints->drawn = $awayTeamPoints->drawn + 1;
+
+    }
+
+    $homeTeamPoints->save();
+    $awayTeamPoints->save();
+
+    echo $nextGame->homeTeam->name . " : " . $homeTeamGoals . "  |  " .$awayTeamGoals  . " : " . $nextGame->awayTeam->name;
+
     
 });
