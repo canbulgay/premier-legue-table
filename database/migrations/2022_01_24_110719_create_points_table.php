@@ -25,6 +25,7 @@ class CreatePointsTable extends Migration
             $table->integer('goals_against')->default(0);
             $table->integer('goal_difference')->storedAs('goals_for - goals_against');
             $table->integer('points')->storedAs('won * 3 + drawn');
+            $table->timestamps();
         });
     }
 
