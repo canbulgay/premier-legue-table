@@ -13,7 +13,7 @@
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
                                 <Link :href="route('dashboard')">
-                                    <jet-application-mark class="block h-9 w-auto" />
+                                    <jet-application-mark class="block h-12 w-auto" />
                                 </Link>
                             </div>
 
@@ -26,6 +26,11 @@
                                 :href="route('fixture')" 
                                 :active="route().current('fixture')">
                                     Fixture
+                                </jet-nav-link>
+                                <jet-nav-link 
+                                :href="route('points')" 
+                                :active="route().current('points')">
+                                    Leader Table
                                 </jet-nav-link>
                             </div>
                         </div>

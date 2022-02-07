@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\Controllers\FixtureTableController;
+use App\Http\Controllers\LeaderTableController;
 use App\Models\Fixture;
 use App\Models\Point;
-use App\Models\Team;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -35,6 +35,10 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 Route::middleware(['auth:sanctum', 'verified'])
 ->get('/fixtures',[FixtureTableController::class,'index'])
 ->name('fixture');
+
+Route::middleware(['auth:sanctum', 'verified'])
+->get('/points',[LeaderTableController::class,'index'])
+->name('points');
 
 Route::get('/test',function(){
 
