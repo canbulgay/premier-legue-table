@@ -22,6 +22,11 @@
                                 <jet-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
                                 </jet-nav-link>
+                                <jet-nav-link 
+                                :href="route('fixture')" 
+                                :active="route().current('fixture')">
+                                    Fixture
+                                </jet-nav-link>
                             </div>
                         </div>
 
